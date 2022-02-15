@@ -1,10 +1,24 @@
 from selenium.webdriver.common.by import By
 
 
+class BasePageLocators():
+    """ Locators.
+
+    The class contains information about how and which element to search for.
+
+    """
+
+    LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
+    LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
+    BASKET_LINK = (By.CSS_SELECTOR, ".basket-mini>.btn-group>a")
+
+
 class MainPageLocators():
     """ Locators for the main page.
 
-    The class contains information about how and which element to search for.
+    The class contains information about how 
+    
+    and which element to search for on the main page.
 
     """
 
@@ -14,7 +28,9 @@ class MainPageLocators():
 class LoginPageLocators():
     """Locators for the login page.
 
-    The class contains information about how and which element to search for.
+    The class contains information about how 
+    
+    and which element to search for on the login page.
 
     """
 
@@ -25,7 +41,9 @@ class LoginPageLocators():
 class ProductPageLocators():
     """Locators for the product page.
 
-    The class contains information about how and which element to search for.
+    The class contains information about how
+    
+    and which element to search for on the product page.
 
     """
 
@@ -36,3 +54,14 @@ class ProductPageLocators():
     PRODUCT_PRICE = (By.CSS_SELECTOR, ".product_main .price_color")
 
 
+class BasketPageLocators():
+    """Locators for the basket page.
+
+    The class contains information about how
+
+    and which element to search for on the product page.
+
+    """
+
+    PRODUCT_IN_BASKET = (By.CSS_SELECTOR, "#basket_formset")
+    BASKET_IS_EMPTY = (By.CSS_SELECTOR, "#content_inner>p")

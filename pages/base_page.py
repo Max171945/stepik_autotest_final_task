@@ -1,5 +1,8 @@
 import math
-from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
+from selenium.common.exceptions import NoAlertPresentException, TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from .locators import BasePageLocators
 
 
 class BasePage():
@@ -13,20 +16,38 @@ class BasePage():
         """ Creating a page object """
         self.browser = browser
         self.url = url
-        self.browser.implicitly_wait(timeout)
+    
+    def go_to_login_page(self):
+        """ Go to the authorization page """
+        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        link.click()
 
+    def go_to_basket_page(self):
+        """ Go to the basket page """
+        basket = self.browser.find_element(*BasePageLocators.BASKET_LINK)
+        basket.click()
+
+    def should_be_login_link(self):
+        """ Will check for the  login link """
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK),\
+                "Login is not present"
+    
     def open(self):
         """ The method opens the desired page in the browser """
         self.browser.get(self.url)
 
-    def is_element_present(self, how, what):
+    def is_element_present(self, how, what, timeout=4):
         """ The method checks for the presence of an element on the page """
         try:
-            self.browser.find_element(how, what)
-        except NoSuchElementException:
+            WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
             return False
         return True
 
+    def is_not_element_present(self, how, what, timeout=4):
+        """ The method checks the absence of an element for a specified time """
+        return not self.is_element_present(how, what, timeout)
+        
     def solve_quiz_and_get_code(self):
         """ 
        
@@ -49,5 +70,18 @@ class BasePage():
         except NoAlertPresentException:
             print("No second alert presented")
 
+    def is_disappeared(self, how, what, timeout=4):
+        """
+        
+        The method checks the disappearance of an element for a certain time
+
+        """
+
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).\
+                    until_not(EC.presence_of_element_located((how, what)))
+        except TimeoutException:
+            return False
+        return True
 
 
