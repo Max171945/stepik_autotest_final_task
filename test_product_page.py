@@ -1,3 +1,4 @@
+import time
 import pytest
 from .pages.product_page import ProductPage
 from .pages.login_page import LoginPage
@@ -105,5 +106,65 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     basket_page = BasketPage(browser, browser.current_url)
     basket_page.should_not_be_product_in_basket()
     basket_page.should_be_text_that_basket_is_empty()
+
+ 
+class TestUserAddToBasketFromProductPage():
+    """ 
+    
+    The test checks the user's ability to add an item to the cart
+    
+    from the product page
+
+    """
+
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        """
+        
+        The method opens the registration page, 
+        
+        registers a new user and checks that the user is logged in
+        
+        """
+        self.browser = browser
+        email = str(time.time()) + "@fakemail.org"
+        password = email + "12345"
+        link = "https://selenium1py.pythonanywhere.com/accounts/login/"
+        page = LoginPage(browser, link)
+        page.open()
+        page.register_new_user(email, password)
+        page.should_be_authorized_user()
+
+    
+    def test_user_cant_see_success_message(self):
+        """
+        
+        The test checks whether there is no message about adding 
+        
+        an item to the cart by the user after opening the page
+        
+        """
+        page = ProductPage(self.browser, link)
+        page.open()
+        page.should_not_be_message_about_item_to_cart()
+
+    def test_user_can_add_product_to_basket(self):
+        """
+        
+        The test checks whether the user can add the product to the cart
+        
+        and the message appears if successfuland the appearance of 
+        
+        a message if successful
+        
+        """
+        page = ProductPage(self.browser, link)
+        page.open()
+        page.should_be_add_to_basket_button()
+        page.add_product_to_cart()     
+        page.should_be_message_about_adding_item_to_cart()
+        page.product_name_matches()
+        page.should_be_message_about_cost_of_basket()
+        page.compare_cost_of_basket_with_product_price()
 
 

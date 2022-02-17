@@ -12,7 +12,7 @@ class BasePage():
 
     """
 
-    def __init__(self, browser, url, timeout=10):
+    def __init__(self, browser, url):
         """ Creating a page object """
         self.browser = browser
         self.url = url
@@ -27,6 +27,11 @@ class BasePage():
         basket = self.browser.find_element(*BasePageLocators.BASKET_LINK)
         basket.click()
 
+    def should_be_authorized_user(self):
+        """ The method checks that the user is logged in """
+        assert self.is_element_present(*BasePageLocators.USER_ICON),\
+                "User icon is not presented, probably unauthorised user"
+    
     def should_be_login_link(self):
         """ Will check for the  login link """
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK),\
