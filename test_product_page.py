@@ -12,6 +12,7 @@ links = [url+str(i) for i in range(10)]
 xfail = 7
 links[xfail] = pytest.param(links[xfail], marks=pytest.mark.xfail(reason="some bug"))
 
+@pytest.mark.need_review
 @pytest.mark.parametrize('link', links)
 def test_guest_can_add_product_to_basket(browser, link):
     """
@@ -83,6 +84,7 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page.open()
     page.should_be_login_link()
 
+@pytest.mark.need_review
 def test_guest_can_go_to_login_page_from_product_page(browser):
     """ The guest can go to the login page from the page """
     link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
@@ -92,6 +94,7 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     login_page = LoginPage(browser, browser.current_url)
     login_page.should_be_login_page()
 
+@pytest.mark.need_review
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     """ 
     
@@ -148,6 +151,7 @@ class TestUserAddToBasketFromProductPage():
         page.open()
         page.should_not_be_message_about_item_to_cart()
 
+    @pytest.mark.need_review
     def test_user_can_add_product_to_basket(self):
         """
         
